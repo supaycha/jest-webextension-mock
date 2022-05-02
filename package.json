@@ -1,5 +1,5 @@
 {
-    "name": "jest-webextension-mock-2",
+    "name": "@intiortega1028/jest-webextension-mock-2",
     "version": "1.0.0",
     "description": "testing publishing PRIVATE NOT FOR PROFIT fork of existing project",
     "main": "dist/setup.js",
