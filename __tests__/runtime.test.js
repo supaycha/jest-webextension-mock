@@ -27,6 +27,17 @@ describe('browser.runtime', () => {
     browser.runtime.sendMessage({ test: 'message' }, done);
     expect(listener).toHaveBeenCalledWith({ test: 'message' });
   });
+  test('connectNative', () => {
+    const name = 'CONNECT_NATIVE_NAME';
+    expect(jest.isMockFunction(browser.runtime.connectNative)).toBe(true);
+    const nativePort = browser.runtime.connectNative({ name });
+    expect(nativePort.name).toEqual(name);
+    expect(jest.isMockFunction(nativePort.postMessage)).toBe(true);
+    expect(jest.isMockFunction(nativePort.onDisconnect.addListener)).toBe(true);
+    expect(jest.isMockFunction(nativePort.onMessage.addListener)).toBe(true);
+    expect(jest.isMockFunction(nativePort.disconnect)).toBe(true);
+    expect(browser.runtime.connectNative).toHaveBeenCalledTimes(1);
+  });
   test('getURL', () => {
     const path = 'TEST_PATH';
     expect(jest.isMockFunction(browser.runtime.getURL)).toBe(true);
@@ -84,32 +95,38 @@ describe('browser.runtime', () => {
   });
   test(`onMessageExternal.addListener`, () => {
     const callback = jest.fn();
-    expect(jest.isMockFunction(browser.runtime.onMessageExternal.addListener)).toBe(
-      true
-    );
+    expect(
+      jest.isMockFunction(browser.runtime.onMessageExternal.addListener)
+    ).toBe(true);
     browser.runtime.onMessageExternal.addListener(callback);
-    expect(browser.runtime.onMessageExternal.addListener).toHaveBeenCalledTimes(1);
+    expect(browser.runtime.onMessageExternal.addListener).toHaveBeenCalledTimes(
+      1
+    );
     expect(callback).toHaveBeenCalledTimes(0);
   });
   test(`onMessageExternal.removeListener`, () => {
     const callback = jest.fn();
-    expect(jest.isMockFunction(browser.runtime.onMessageExternal.removeListener)).toBe(
-      true
-    );
+    expect(
+      jest.isMockFunction(browser.runtime.onMessageExternal.removeListener)
+    ).toBe(true);
     browser.runtime.onMessageExternal.removeListener(callback);
     expect(browser.runtime.onMessageExternal.hasListener(callback)).toBe(false);
-    expect(browser.runtime.onMessageExternal.removeListener).toHaveBeenCalledTimes(1);
+    expect(
+      browser.runtime.onMessageExternal.removeListener
+    ).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledTimes(0);
   });
   test(`onMessageExternal.hasListener`, () => {
     const callback = jest.fn();
-    expect(jest.isMockFunction(browser.runtime.onMessageExternal.hasListener)).toBe(
-      true
-    );
+    expect(
+      jest.isMockFunction(browser.runtime.onMessageExternal.hasListener)
+    ).toBe(true);
     browser.runtime.onMessageExternal.addListener(callback);
     const returnVal = browser.runtime.onMessageExternal.hasListener(callback);
     expect(returnVal).toBe(true);
-    expect(browser.runtime.onMessageExternal.hasListener).toHaveBeenCalledTimes(1);
+    expect(browser.runtime.onMessageExternal.hasListener).toHaveBeenCalledTimes(
+      1
+    );
     expect(callback).toHaveBeenCalledTimes(0);
   });
   ['addListener', 'removeListener', 'hasListener'].forEach((method) => {

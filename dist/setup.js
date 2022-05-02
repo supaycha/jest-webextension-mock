@@ -4,17 +4,17 @@
 var omnibox = {
   setDefaultSuggestion: jest.fn(),
   onInputStarted: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onInputChanged: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onInputEntered: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onInputCancelled: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 var onMessageListeners = [];
@@ -25,14 +25,14 @@ var runtime = {
       name: name,
       postMessage: jest.fn(),
       onDisconnect: {
-        addListener: jest.fn()
+        addListener: jest.fn(),
       },
       onMessage: {
         addListener: jest.fn(function (listener) {
           onMessageListeners.push(listener);
-        })
+        }),
       },
-      disconnect: jest.fn()
+      disconnect: jest.fn(),
     };
   }),
   sendMessage: jest.fn(function (message, cb) {
@@ -57,51 +57,55 @@ var runtime = {
     }),
     hasListener: jest.fn(function (listener) {
       return onMessageListeners.includes(listener);
-    })
+    }),
   },
   onConnect: {
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    hasListener: jest.fn()
+    hasListener: jest.fn(),
   },
   onInstalled: {
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    hasListener: jest.fn()
+    hasListener: jest.fn(),
   },
   getURL: jest.fn(function (path) {
     return path;
   }),
-  openOptionsPage: jest.fn()
+  openOptionsPage: jest.fn(),
 };
 
 // https://developer.chrome.com/extensions/tabs
 var tabs = {
   get: jest.fn(function () {
-    var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () { };
+    var cb =
+      arguments.length > 1 && arguments[1] !== undefined
+        ? arguments[1]
+        : function () {};
     return cb({});
   }),
   getCurrent: jest.fn(function (cb) {
     return cb({});
   }),
   connect: jest.fn(function () {
-    var info = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var info =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     // returns a Port
     return {
       name: info.name,
       disconnect: jest.fn(),
       onDisconnect: {
-        addListener: jest.fn()
+        addListener: jest.fn(),
       },
       onMessage: {
-        addListener: jest.fn()
+        addListener: jest.fn(),
       },
-      postMessage: jest.fn() // TODO: add sender
-
+      postMessage: jest.fn(), // TODO: add sender
     };
   }),
   create: jest.fn(function () {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var props =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var cb = arguments.length > 1 ? arguments[1] : undefined;
 
     if (cb !== undefined) {
@@ -118,42 +122,71 @@ var tabs = {
     return Promise.resolve();
   }),
   duplicate: jest.fn(function () {
-    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () { };
-    return cb(Object.assign({}, {
-      id: id
-    }));
+    var id =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var cb =
+      arguments.length > 1 && arguments[1] !== undefined
+        ? arguments[1]
+        : function () {};
+    return cb(
+      Object.assign(
+        {},
+        {
+          id: id,
+        }
+      )
+    );
   }),
   query: jest.fn(function () {
-    var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () { };
+    var cb =
+      arguments.length > 1 && arguments[1] !== undefined
+        ? arguments[1]
+        : function () {};
     return cb([{}]);
   }),
   highlight: jest.fn(function () {
-    var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () { };
+    var cb =
+      arguments.length > 1 && arguments[1] !== undefined
+        ? arguments[1]
+        : function () {};
     return cb();
   }),
   update: jest.fn(function () {
-    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var cb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () { };
-    return cb(Object.assign({}, props, {
-      id: id
-    }));
+    var id =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var props =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var cb =
+      arguments.length > 2 && arguments[2] !== undefined
+        ? arguments[2]
+        : function () {};
+    return cb(
+      Object.assign({}, props, {
+        id: id,
+      })
+    );
   }),
   move: jest.fn(function () {
-    var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var cb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () { };
-    return cb(ids.map(function (id) {
-      return Object.assign({}, props, {
-        id: id
-      });
-    }));
+    var ids =
+      arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var props =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var cb =
+      arguments.length > 2 && arguments[2] !== undefined
+        ? arguments[2]
+        : function () {};
+    return cb(
+      ids.map(function (id) {
+        return Object.assign({}, props, {
+          id: id,
+        });
+      })
+    );
   }),
   onUpdated: {
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    hasListener: jest.fn()
+    hasListener: jest.fn(),
   },
   sendMessage: jest.fn(function (tabId, message, cb) {
     onMessageListeners.forEach(function (listener) {
@@ -168,19 +201,24 @@ var tabs = {
   }),
   reload: jest.fn(function (tabId, reloadProperties, cb) {
     return cb();
-  })
+  }),
 };
 
 function _typeof(obj) {
-  "@babel/helpers - typeof";
+  '@babel/helpers - typeof';
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+  if (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') {
     _typeof = function (obj) {
       return typeof obj;
     };
   } else {
     _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      return obj &&
+        typeof Symbol === 'function' &&
+        obj.constructor === Symbol &&
+        obj !== Symbol.prototype
+        ? 'symbol'
+        : typeof obj;
     };
   }
 
@@ -229,7 +267,7 @@ var storage = {
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
-        return store[key] = payload[key];
+        return (store[key] = payload[key]);
       });
 
       if (cb !== undefined) {
@@ -258,7 +296,7 @@ var storage = {
       }
 
       return Promise.resolve();
-    })
+    }),
   },
   local: {
     get: jest.fn(function (id, cb) {
@@ -279,7 +317,7 @@ var storage = {
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
-        return store[key] = payload[key];
+        return (store[key] = payload[key]);
       });
 
       if (cb !== undefined) {
@@ -308,7 +346,7 @@ var storage = {
       }
 
       return Promise.resolve();
-    })
+    }),
   },
   managed: {
     get: jest.fn(function (id, cb) {
@@ -329,7 +367,7 @@ var storage = {
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
-        return store[key] = payload[key];
+        return (store[key] = payload[key]);
       });
 
       if (cb !== undefined) {
@@ -358,13 +396,13 @@ var storage = {
       }
 
       return Promise.resolve();
-    })
+    }),
   },
   onChanged: {
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    hasListener: jest.fn()
-  }
+    hasListener: jest.fn(),
+  },
 };
 
 var getDetails = function getDetails(details, cb) {
@@ -388,8 +426,8 @@ var browserAction = {
   enable: jest.fn(),
   disable: jest.fn(),
   onClicked: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 // https://developer.chrome.com/extensions/commands
@@ -402,8 +440,8 @@ var commands = {
     return Promise.resolve();
   }),
   onCommand: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 var cbOrPromise = function cbOrPromise(cb, value) {
@@ -441,44 +479,44 @@ var notifications = {
     return cbOrPromise(cb, 'granted');
   }),
   onClosed: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onClicked: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onButtonClicked: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onPermissionLevelChanged: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onShowSettings: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 var i18n = {
   getAcceptLanguages: jest.fn(),
   getMessage: jest.fn(function (key) {
-    return "Translated<".concat(key, ">");
+    return 'Translated<'.concat(key, '>');
   }),
   getUILanguage: jest.fn(function () {
     return 'en';
   }),
-  detectLanguage: jest.fn()
+  detectLanguage: jest.fn(),
 };
 
 var webNavigation = {
   onCompleted: {
-    addListener: jest.fn()
+    addListener: jest.fn(),
   },
   onHistoryStateUpdated: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 var extension = {
-  getURL: jest.fn()
+  getURL: jest.fn(),
 };
 
 var downloads = {
@@ -520,8 +558,8 @@ var geckoProfiler = {
     return Promise.resolve();
   }),
   onRunning: {
-    addListener: jest.fn()
-  }
+    addListener: jest.fn(),
+  },
 };
 
 var chrome = {

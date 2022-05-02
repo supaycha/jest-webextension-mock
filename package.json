@@ -1,17 +1,13 @@
 {
-    "name": "jest-webextension-mock",
-    "version": "3.5.0",
-    "description": "Mock the components of a WebExtension",
+    "name": "jest-webextension-mock-2",
+    "version": "1.0.0",
+    "description": "testing publishing PRIVATE NOT FOR PROFIT fork of existing project",
     "main": "dist/setup.js",
     "module": "src/setup.js",
-    "author": "Bryan Clark <clarkbw@gmail.com> (https://twitter.com/clarkbw)",
+    "author": "Inti Ortega",
     "license": "ISC",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/clarkbw/jest-webextension-mock.git"
-    },
     "scripts": {
-        "test": "jest",
+        "test": "jest runtime",
         "build": "rollup -c",
         "prettier": "prettier --write \"{config,src,__{tests,setups}__}/**/*.js\" rollup.config.js",
         "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"

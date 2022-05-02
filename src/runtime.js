@@ -16,6 +16,21 @@ export const runtime = {
       disconnect: jest.fn(),
     };
   }),
+  connectNative: jest.fn(function ({ name }) {
+    return {
+      name,
+      postMessage: jest.fn(),
+      onDisconnect: {
+        addListener: jest.fn(),
+      },
+      onMessage: {
+        addListener: jest.fn((listener) => {
+          onMessageListeners.push(listener);
+        }),
+      },
+      disconnect: jest.fn(),
+    };
+  }),
   sendMessage: jest.fn((message, cb) => {
     onMessageListeners.forEach((listener) => listener(message));
     if (cb !== undefined) {
@@ -43,7 +58,9 @@ export const runtime = {
         (lstn) => lstn !== listener
       );
     }),
-    hasListener: jest.fn((listener) => onMessageExternalListeners.includes(listener)),
+    hasListener: jest.fn((listener) =>
+      onMessageExternalListeners.includes(listener)
+    ),
   },
   onConnect: {
     addListener: jest.fn(),
