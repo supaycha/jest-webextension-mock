@@ -6,6 +6,10 @@
     "module": "src/setup.js",
     "author": "Inti Ortega",
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/supaycha/jest-webextension-mock"
+    },
     "scripts": {
         "test": "jest runtime",
         "build": "rollup -c",
